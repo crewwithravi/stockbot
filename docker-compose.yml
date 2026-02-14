@@ -1,0 +1,20 @@
+services:
+  stockbot-api:
+    build: .
+    container_name: stockbot-api
+    ports:
+      - "${APP_PORT:-5050}:8000"
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - stockbot_data:/app/data
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  stockbot_data:

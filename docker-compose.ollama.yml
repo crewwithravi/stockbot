@@ -1,0 +1,25 @@
+# Use this if Ollama is NOT already running on the host:
+#   docker compose -f docker-compose.yml -f docker-compose.ollama.yml up -d
+services:
+  stockbot-api:
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:0.9
+    container_name: stockbot-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

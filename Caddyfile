@@ -1,0 +1,17 @@
+# For LAN access (no domain): use IP directly
+# For public access: replace with your domain (e.g. stockbot.yourdomain.com)
+:80 {
+    reverse_proxy stockbot-api:8000
+
+    # Rate limiting headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+
+    log {
+        output stdout
+        format console
+    }
+}
